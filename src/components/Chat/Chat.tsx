@@ -55,6 +55,10 @@ const Chat = ({
   messageContainerRef,
 }: IChatProps) => {
   const [input, setInputValue] = useState("");
+  useEffect(() => {
+    if (disableScrollToBottom) return;
+    scrollIntoView();
+  });
   const { messages } = state;
 
   const scrollIntoView = () => {
@@ -65,11 +69,6 @@ const Chat = ({
       }
     }, 50);
   };
-
-  useEffect(() => {
-    if (disableScrollToBottom) return;
-    scrollIntoView();
-  });
 
   const showAvatar = (messages: any[], index: number) => {
     if (index === 0) return true;

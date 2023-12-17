@@ -45,32 +45,32 @@ const Chatbot = ({
   parse,
   ...rest
 }: IChatbotProps) => {
-  const customStyles = getCustomStyles(config);
-  const customComponents = getCustomComponents(config);
-  const botName = getBotName(config);
-  const customMessages = getCustomMessages(config);
-
-  const initialState = getInitialState(config);
-
   const messagesRef = React.useRef(state.messages);
   const messageContainerRef: React.MutableRefObject<HTMLDivElement> =
     React.useRef(null);
+    useEffect(() => {
+      messagesRef.current = state.messages;
+    });
+  
+    useEffect(() => {
+      const refValue: HTMLDivElement = messageContainerRef.current;
+  
+      return () => {
+        if (saveMessages && typeof saveMessages === "function") {
+          const HTML = refValue.innerHTML.toString();
+  
+          saveMessages(messagesRef.current, HTML);
+        }
+      };
+    }, []);
+  const customComponents = getCustomComponents(config);
+  const botName = getBotName(config);
+  
 
-  useEffect(() => {
-    messagesRef.current = state.messages;
-  });
+  
+  
 
-  useEffect(() => {
-    const refValue: HTMLDivElement = messageContainerRef.current;
-
-    return () => {
-      if (saveMessages && typeof saveMessages === "function") {
-        const HTML = refValue.innerHTML.toString();
-
-        saveMessages(messagesRef.current, HTML);
-      }
-    };
-  }, []);
+  
   let widgets;
   let widgetRegistry: WidgetRegistry;
   widgetRegistry = new WidgetRegistry(setState, null);
