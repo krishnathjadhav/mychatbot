@@ -5,13 +5,14 @@ import Chatbot from "../components/Chatbot/Chatbot";
 import { createChatBotMessage } from "../components/Chat/chatUtils";
 import "./mychatbot.scss";
 import ChatBotButton from "./ChatBotButton";
+const initialState = getInitialState(Configuration);
 const MyChatBot = () => {
-  const initialState = getInitialState(Configuration);
   const [state, setState] = React.useState({
     messages: [...Configuration.initialMessages],
     ...initialState,
   });
   const [activeChatBot, setActiveChatBot] = React.useState(false);
+
   const saveMessages = (ref: any, hmtl: string) => {};
   const onHelpClick = (val: boolean) => {
     setActiveChatBot(val);

@@ -54,9 +54,8 @@ const Chat = ({
   disableScrollToBottom,
   messageContainerRef,
 }: IChatProps) => {
-  const { messages } = state;
-
   const [input, setInputValue] = useState("");
+  const { messages } = state;
 
   const scrollIntoView = () => {
     setTimeout(() => {
