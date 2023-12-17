@@ -1,26 +1,25 @@
-import React, { useState, useRef, useEffect, SetStateAction } from 'react';
-import ConditionallyRender from 'react-conditionally-render';
+import React, { useState, useRef, useEffect, SetStateAction } from "react";
 
-import UserChatMessage from '../UserChatMessage/UserChatMessage';
-import ChatbotMessage from '../ChatbotMessage/ChatbotMessage';
+import UserChatMessage from "../UserChatMessage/UserChatMessage";
+import ChatbotMessage from "../ChatbotMessage/ChatbotMessage";
 
 import {
   botMessage,
   userMessage,
   customMessage,
   createChatMessage,
-} from './chatUtils';
+} from "./chatUtils";
 
-import ChatIcon from '../../assets/icons/paper-plane.svg';
+import ChatIcon from "../../assets/icons/paper-plane.svg";
 
-import './Chat.css';
+import "./Chat.css";
 import {
   ICustomComponents,
   ICustomMessage,
   ICustomStyles,
-} from '../../interfaces/IConfig';
-import { IMessage } from '../../interfaces/IMessages';
-import { string } from 'prop-types';
+} from "../../interfaces/IConfig";
+import { IMessage } from "../../interfaces/IMessages";
+import { string } from "prop-types";
 
 interface IChatProps {
   setState: React.Dispatch<SetStateAction<any>>;
@@ -57,7 +56,7 @@ const Chat = ({
 }: IChatProps) => {
   const { messages } = state;
 
-  const [input, setInputValue] = useState('');
+  const [input, setInputValue] = useState("");
 
   const scrollIntoView = () => {
     setTimeout(() => {
@@ -78,7 +77,7 @@ const Chat = ({
 
     const lastMessage = messages[index - 1];
 
-    if (lastMessage.type === 'bot' && !lastMessage.widget) {
+    if (lastMessage.type === "bot" && !lastMessage.widget) {
       return false;
     }
     return true;
@@ -101,12 +100,8 @@ const Chat = ({
           </React.Fragment>
         );
       }
-
-      
     });
   };
-
-  
 
   const renderUserMessage = (messageObject: IMessage) => {
     const widget = widgetRegistry.getWidget(messageObject.widget, {
@@ -156,10 +151,6 @@ const Chat = ({
             {...chatbotMessageProps}
             key={messageObject.id}
           />
-          <ConditionallyRender
-            condition={!chatbotMessageProps.loading}
-            show={widget ? widget : null}
-          />
         </>
       );
     }
@@ -179,26 +170,24 @@ const Chat = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    
-      handleValidMessage();
-      //if (parse) {
-        return parse(input);
-      //}
-      //messageParser.parse(input);
-   
+    handleValidMessage();
+    //if (parse) {
+    return parse(input);
+    //}
+    //messageParser.parse(input);
   };
 
   const handleValidMessage = () => {
     setState((state: any) => ({
       ...state,
-      messages: [...state.messages, createChatMessage(input, 'user')],
+      messages: [...state.messages, createChatMessage(input, "user")],
     }));
 
     scrollIntoView();
-    setInputValue('');
+    setInputValue("");
   };
 
-  const customButtonStyle = { backgroundColor: '' };
+  const customButtonStyle = { backgroundColor: "" };
   if (customStyles && customStyles.chatButton) {
     customButtonStyle.backgroundColor = customStyles.chatButton.backgroundColor;
   }
@@ -208,7 +197,7 @@ const Chat = ({
     header = headerText;
   }
 
-  let placeholder = 'Write your message here';
+  let placeholder = "Write your message here";
   if (placeholderText) {
     placeholder = placeholderText;
   }
@@ -216,24 +205,16 @@ const Chat = ({
   return (
     <div className="react-chatbot-kit-chat-container">
       <div className="react-chatbot-kit-chat-inner-container">
-        <ConditionallyRender
-          condition={!!customComponents.header}
-          show={
-            (customComponents.header && customComponents.header())??(()=>(<div>header</div>))
-          }
-          elseShow={
-            <div className="react-chatbot-kit-chat-header">{header}</div>
-          }
-        />
+        {!!customComponents.header
+          ? customComponents.header && customComponents.header()
+          : () => <div>header</div>}
 
         <div
           className="react-chatbot-kit-chat-message-container"
           ref={messageContainerRef}
         >
-          
-
           {renderMessages()}
-          <div style={{ paddingBottom: '15px' }} />
+          <div style={{ paddingBottom: "15px" }} />
         </div>
 
         <div className="react-chatbot-kit-chat-input-container">
