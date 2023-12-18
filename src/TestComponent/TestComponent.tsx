@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { TestComponentProps } from "./TestComponent.types";
 
 import "./TestComponent.scss";
 
 const TestComponent: React.FC<TestComponentProps> = ({ theme }) => {
-  const [cc, setCC] = React.useState(10);
+  const [cc, setCC] = useState(10);
   return (
     <div
       data-testid="test-component"
