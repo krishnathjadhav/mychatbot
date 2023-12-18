@@ -10,7 +10,7 @@ import {
   createChatMessage,
 } from "./chatUtils";
 
-//import ChatIcon from "../../assets/icons/paper-plane.svg";
+import ChatIcon from "../../assets/icons/paper-plane.svg";
 
 import "./Chat.css";
 import {
@@ -20,7 +20,6 @@ import {
 } from "../../interfaces/IConfig";
 import { IMessage } from "../../interfaces/IMessages";
 import { string } from "prop-types";
-import ConditionallyRender from "react-conditionally-render";
 
 interface IChatProps {
   setState: React.Dispatch<SetStateAction<any>>;
@@ -150,10 +149,6 @@ const Chat = ({
             {...chatbotMessageProps}
             key={messageObject.id}
           />
-          <ConditionallyRender
-            condition={!chatbotMessageProps.loading}
-            show={widget ? widget : null}
-          />
         </>
       );
     }
@@ -208,13 +203,9 @@ const Chat = ({
   return (
     <div className="react-chatbot-kit-chat-container">
       <div className="react-chatbot-kit-chat-inner-container">
-        <ConditionallyRender
-          condition={!!customComponents.header}
-          show={customComponents.header && customComponents.header()}
-          elseShow={
-            <div className="react-chatbot-kit-chat-header">{header}</div>
-          }
-        />
+        {!!customComponents.header
+          ? customComponents.header && customComponents.header()
+          : () => <div>header</div>}
 
         <div
           className="react-chatbot-kit-chat-message-container"
@@ -239,7 +230,7 @@ const Chat = ({
               className="react-chatbot-kit-chat-btn-send"
               style={customButtonStyle}
             >
-              {/** --<ChatIcon className="react-chatbot-kit-chat-btn-send-icon" />-- **/}
+              {/**<ChatIcon className="react-chatbot-kit-chat-btn-send-icon" />**/}
             </button>
           </form>
         </div>

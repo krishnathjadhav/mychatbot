@@ -29,7 +29,6 @@ const MyChatBot = () => {
   };
   return (
     <div>
-      Hey Krishnath
       {activeChatBot ? (
         <div className="modal-chat">
           <div className="lp_header lpc_maximized-header lpc_desktop">
