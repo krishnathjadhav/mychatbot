@@ -6,6 +6,7 @@ import Loader from "../Loader/Loader";
 import "./ChatbotMessage.css";
 import { callIfExists } from "../Chat/chatUtils";
 import { ICustomComponents, ICustomStyles } from "../../interfaces/IConfig";
+import ConditionallyRender from "react-conditionally-render";
 
 interface IChatbotMessageProps {
   message: string;
@@ -83,8 +84,11 @@ const ChatbotMessage = ({
   }
 
   return (
-    <div className="react-chatbot-kit-chat-bot-message-container">
-      {/**<ConditionallyRender
+    <ConditionallyRender
+      condition={show}
+      show={
+        <div className="react-chatbot-kit-chat-bot-message-container">
+          <ConditionallyRender
             condition={withAvatar}
             show={
               <ConditionallyRender
@@ -93,19 +97,39 @@ const ChatbotMessage = ({
                 elseShow={<ChatbotMessageAvatar />}
               />
             }
-          />**/}
-      {!!customComponents?.botAvatar ? (
-        customComponents?.botAvatar
-      ) : (
-        <ChatbotMessageAvatar />
-      )}
-      <div
-        className="react-chatbot-kit-chat-bot-message"
-        style={chatBoxCustomStyles}
-      >
-        {loading ? <Loader /> : <span>{message}</span>}
-      </div>
-    </div>
+          />
+
+          <ConditionallyRender
+            condition={!!customComponents?.botChatMessage}
+            show={callIfExists(customComponents?.botChatMessage, {
+              message,
+              loader: <Loader />,
+            })}
+            elseShow={
+              <div
+                className="react-chatbot-kit-chat-bot-message"
+                style={chatBoxCustomStyles}
+              >
+                <ConditionallyRender
+                  condition={loading}
+                  show={<Loader />}
+                  elseShow={<span>{message}</span>}
+                />
+                <ConditionallyRender
+                  condition={withAvatar}
+                  show={
+                    <div
+                      className="react-chatbot-kit-chat-bot-message-arrow"
+                      style={arrowCustomStyles}
+                    ></div>
+                  }
+                />
+              </div>
+            }
+          />
+        </div>
+      }
+    />
   );
 };
 
